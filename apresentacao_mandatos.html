@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mandatos Bolsonaro (2019–2022) x Lula (2023–2026) — Levantamento de dados</title>
+<style>
+  :root {
+    --bolso: #4a6fa5;
+    --lula: #b5862a;
+    --ink: #1f2933;
+    --muted: #6b7785;
+    --bg: #f7f5f0;
+    --card: #ffffff;
+    --line: #e4e0d6;
+    --warn: #9a6700;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; font-family: "Segoe UI", system-ui, -apple-system, Arial, sans-serif; color: var(--ink); background: #222; }
+  .deck { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
+  .slide {
+    position: absolute; inset: 0; background: var(--bg);
+    display: none; flex-direction: column; padding: 48px 64px 56px;
+    overflow: hidden;
+  }
+  .slide.active { display: flex; }
+  h1 { font-size: 40px; margin: 0 0 6px; line-height: 1.15; }
+  h2 { font-size: 30px; margin: 0 0 4px; line-height: 1.2; }
+  .kicker { font-size: 14px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .sub { color: var(--muted); font-size: 16px; margin: 0 0 18px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; flex: 1; min-height: 0; }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; }
+  .chart-card { display: flex; flex-direction: column; min-height: 0; }
+  .chart-card h3 { font-size: 17px; margin: 0 0 4px; }
+  .chart-card .note { font-size: 13px; color: var(--muted); margin: 0 0 10px; }
+  .chart { flex: 1; min-height: 0; }
+  .chart svg { width: 100%; height: 100%; }
+  .kpi { display: flex; flex-direction: column; gap: 4px; }
+  .kpi .val { font-size: 34px; font-weight: 700; }
+  .kpi .lbl { font-size: 14px; color: var(--muted); }
+  .bolso { color: var(--bolso); }
+  .lula { color: var(--lula); }
+  .tag { display: inline-block; font-size: 12px; padding: 3px 9px; border-radius: 999px; background: #eee; color: #444; margin-right: 6px; }
+  .tag.b { background: #e4ecf7; color: var(--bolso); }
+  .tag.l { background: #f6eedb; color: var(--lula); }
+  .tag.w { background: #fbf0d4; color: var(--warn); }
+  table { border-collapse: collapse; width: 100%; font-size: 15px; }
+  th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); font-weight: 600; }
+  td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  ul { margin: 0; padding-left: 20px; font-size: 16px; line-height: 1.6; }
+  li { margin-bottom: 4px; }
+  .small { font-size: 12.5px; color: var(--muted); line-height: 1.45; }
+  .footer { margin-top: auto; padding-top: 12px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--line); }
+  .nd { color: #aaa; font-style: italic; }
+  .pill { font-size: 13px; color: var(--muted); }
+  .nav { position: fixed; bottom: 14px; right: 18px; font-size: 13px; color: #ddd; background: rgba(0,0,0,.45); padding: 6px 12px; border-radius: 999px; user-select: none; }
+  .cover { background: linear-gradient(135deg, #1f2933 0%, #34495e 55%, #4a6fa5 100%); color: #fff; justify-content: center; }
+  .cover .sub { color: #d6dee8; font-size: 19px; }
+  .cover .kicker { color: #aebdd0; }
+  .cover .bar { display: flex; gap: 14px; margin-top: 26px; }
+  .cover .bar div { padding: 10px 16px; border-radius: 10px; font-weight: 600; }
+  .cover .bar .b { background: rgba(74,111,165,.55); }
+  .cover .bar .l { background: rgba(181,134,42,.6); }
+  .cover .bar .n { background: rgba(255,255,255,.12); font-weight: 400; color: #e8edf3; }
+  @media print {
+    html, body { background: #fff; height: auto; }
+    .deck { height: auto; width: auto; overflow: visible; }
+    .slide { position: relative; display: flex !important; page-break-after: always; width: 297mm; height: 167mm; padding: 30px 40px; }
+    .nav { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+  <!-- 1. CAPA -->
+  <section class="slide cover active">
+    <div class="kicker">Levantamento imparcial · dados e fontes oficiais</div>
+    <h1 style="font-size:52px">Mandatos Bolsonaro x Lula</h1>
+    <p class="sub">Presidente Jair Bolsonaro (2019–2022) e presidente Luiz Inácio Lula da Silva (2023–2026*)<br>Economia, dívida, juros, endividamento, pobreza, segurança, saneamento e mortes de pessoas LGBTI+</p>
+    <div class="bar">
+      <div class="b">2019–2022 · Bolsonaro</div>
+      <div class="l">2023–2026* · Lula</div>
+      <div class="n">*Mandato em curso (termina em 31/12/2026). Dados até a última divulgação disponível em 26/10/2026.</div>
+    </div>
+  </section>
+
+  <!-- 2. METODOLOGIA -->
+  <section class="slide">
+    <div class="kicker">Como ler este levantamento</div>
+    <h2>Metodologia e critérios</h2>
+    <p class="sub">Fonte oficial primeiro. ONGs e pesquisas privadas aparecem identificadas. Lacunas são marcadas, nunca preenchidas com estimativa.</p>
+    <div class="grid3" style="flex:1">
+      <div class="card">
+        <h3 style="margin-top:0">Fontes oficiais</h3>
+        <ul>
+          <li><b>IBGE</b> — PIB, IPCA, PNAD Contínua, pobreza</li>
+          <li><b>Banco Central</b> — Selic, dívida bruta, endividamento das famílias</li>
+          <li><b>Tesouro Nacional / Ipea</b> — resultado fiscal</li>
+          <li><b>Fórum Brasileiro de Segurança Pública</b> — Anuário (mortes violentas)</li>
+          <li><b>Ministério das Cidades / SINISA</b> — saneamento</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">Fontes não governamentais</h3>
+        <ul>
+          <li><b>Grupo Gay da Bahia (GGB)</b> — mortes violentas de LGBTI+ (contagem por notícias)</li>
+          <li><b>Antra</b> — assassinatos de pessoas trans (com base em dados oficiais, processos e notícias)</li>
+          <li><b>CNC (Peic)</b> — famílias endividadas (pesquisa privada)</li>
+          <li><b>Instituto Trata Brasil</b> — ranking de saneamento</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">Regras de leitura</h3>
+        <ul>
+          <li><b>n.d.</b> = não localizado nesta pesquisa; conferir na fonte</li>
+          <li>Anos de mandato usados como recorte; <b>Lula 2025–2026</b> ainda incompletos</li>
+          <li>Causalidade é debatida: pandemia, guerra na Ucrânia e juros globais afetam todos os indicadores</li>
+          <li>Dados de ONGs são subnotificados e podem divergir de anuários oficiais</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer">Os valores foram consolidados a partir de buscas em portais e reportagens que citam as fontes oficiais. Antes de publicar, confira cada número na série oficial indicada no slide de fontes.</div>
+  </section>
+
+  <!-- 3. PIB -->
+  <section class="slide">
+    <div class="kicker">Economia · atividade</div>
+    <h2>Crescimento do PIB</h2>
+    <p class="sub">Variação anual real do PIB (%). Fonte: IBGE, Contas Nacionais.</p>
+    <div class="grid2">
+      <div class="card chart-card">
+        <h3>PIB real — variação anual</h3>
+        <p class="note">2023 com valor definitivo (3,2%); a primeira divulgação foi 2,9%.</p>
+        <div class="chart" id="c-pib"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div class="card kpi"><div class="val bolso">1,4% <span style="font-size:16px;color:var(--muted)">média anual</span></div><div class="lbl">Bolsonaro 2019–2022 (1,2; −3,3; 4,8; 3,0)</div></div>
+        <div class="card kpi"><div class="val lula">3,3% <span style="font-size:16px;color:var(--muted)">média anual</span></div><div class="lbl">Lula 2023–2024 (3,2; 3,4). 2025: valor anual não localizado</div></div>
+        <div class="card"><p class="small" style="margin:0">Em 2020 o PIB teve a maior queda anual desde 1996 por causa da pandemia. A média de 2019–2022 inclui essa queda e a recuperação de 2021.</p></div>
+      </div>
+    </div>
+    <div class="footer">Fonte: IBGE — Contas Nacionais Trimestrais e Anuais. Média calculada pelo levantamento.</div>
+  </section>
+
+  <!-- 4. INFLAÇÃO E JUROS -->
+  <section class="slide">
+    <div class="kicker">Economia · preços e juros</div>
+    <h2>Inflação (IPCA) e taxa Selic</h2>
+    <p class="sub">IPCA acumulado no ano (dez/dez) e Selic ao fim do ano, em % ao ano.</p>
+    <div class="grid2">
+      <div class="card chart-card"><h3>IPCA — acumulado no ano</h3><p class="note">Fonte: IBGE. Valores de 2019–2025 conferidos em tabela de fontes secundárias.</p><div class="chart" id="c-ipca"></div></div>
+      <div class="card chart-card"><h3>Selic — fim de ano</h3><p class="note">Fonte: Banco Central (Copom). 2019 e 2023 não confirmados nesta pesquisa (ver nota).</p><div class="chart" id="c-selic"></div></div>
+    </div>
+    <div class="footer">Nota: Selic de 2019 (4,50%) e de 2023 (11,75%) são valores conhecidos, mas não foram confirmados nas fontes consultadas. Conferir em comunicados do Copom. Média IPCA: Bolsonaro 6,2% (2019–2022) · Lula 4,6% (2023–2025).</div>
+  </section>
+
+  <!-- 5. EMPREGO -->
+  <section class="slide">
+    <div class="kicker">Economia · trabalho</div>
+    <h2>Desemprego (PNAD Contínua)</h2>
+    <p class="sub">Taxa média anual de desocupação (%). Fonte: IBGE, PNAD Contínua.</p>
+    <div class="grid2">
+      <div class="card chart-card"><h3>Taxa média anual de desocupação</h3><p class="note">2021 não localizado. 2022: 9,3% (IBGE) ou 9,6% (Agência Brasil, versão anterior).</p><div class="chart" id="c-desemp"></div></div>
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div class="card kpi"><div class="val">11,9% → 13,5%</div><div class="lbl">2019 → 2020 (pico da série, pandemia)</div></div>
+        <div class="card kpi"><div class="val lula">6,6% <span style="font-size:16px;color:var(--muted)">em 2024</span></div><div class="lbl">menor patamar desde a série iniciada em 2012, com 5,1% no 4º tri/2025</div></div>
+        <div class="card"><p class="small" style="margin:0">Taxa trimestral mais recente exige conferir a PNAD Contínua no site do IBGE; a média de 2025 não foi localizada.</p></div>
+      </div>
+    </div>
+    <div class="footer">Fonte: IBGE — PNAD Contínua. Retrospectiva 2012–2022 e divulgações anuais.</div>
+  </section>
+
+  <!-- 6. DÍVIDA PÚBLICA -->
+  <section class="slide">
+    <div class="kicker">Dívida pública</div>
+    <h2>Dívida bruta do governo geral (% do PIB)</h2>
+    <p class="sub">Indicador do Banco Central. Pico na pandemia, queda em 2022 e alta desde 2024.</p>
+    <div class="grid2">
+      <div class="card chart-card"><h3>Dívida bruta — fim de cada período</h3><p class="note">2019 e 2021 não localizados. 2020: pico de 87,6% (valor de nota do BC). Ago/2026: 82,86%, o maior nível em 65 meses.</p><div class="chart" id="c-divida"></div></div>
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div class="card kpi"><div class="val bolso">73,5% <span style="font-size:16px;color:var(--muted)">em dez/2022</span></div><div class="lbl">Fim do mandato Bolsonaro: menor nível em cerca de cinco anos</div></div>
+        <div class="card kpi"><div class="val lula">78,7% <span style="font-size:16px;color:var(--muted)">em dez/2025</span></div><div class="lbl">Alta de 2,4 p.p. em 2025; 82,9% em ago/2026</div></div>
+        <div class="card"><p class="small" style="margin:0">A dívida bruta sobe com juros altos e déficits primários. Os dados de dívida líquida e de juros nominais estão em estatísticas fiscais do BC e não foram incluídos aqui.</p></div>
+      </div>
+    </div>
+    <div class="footer">Fonte: Banco Central do Brasil — Estatísticas Fiscais (DBGG). Valores de imprensa que reproduzem o BC.</div>
+  </section>
+
+  <!-- 7. ENDIVIDAMENTO DAS FAMÍLIAS -->
+  <section class="slide">
+    <div class="kicker">Endividamento das famílias</div>
+    <h2>Quanto da renda vai para dívidas</h2>
+    <p class="sub">Endividamento = dívidas com o sistema financeiro / renda acumulada de 12 meses (%).</p>
+    <div class="grid2">
+      <div class="card chart-card"><h3>Endividamento das famílias (%)</h3><p class="note">Pontos disponíveis: jul/2019, jul/2022 (recorde anterior), dez/2023, dez/2025 e jan/2026.</p><div class="chart" id="c-endiv"></div></div>
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div class="card kpi"><div class="val">49,9% <span style="font-size:16px;color:var(--muted)">recorde da série</span></div><div class="lbl">Registrado em jul/2022 e de novo em jan/2026</div></div>
+        <div class="card kpi"><div class="val">~28–29%</div><div class="lbl">Comprometimento da renda com juros e amortizações (2025–2026). Pico na série citado em 29,7%.</div></div>
+        <div class="card"><p class="small" style="margin:0">Em pesquisa privada da CNC (Peic), 80,4% das famílias declararam alguma dívida em mar/2026. Esse é outro indicador, com metodologia diferente, e não deve ser comparado diretamente com o do BC.</p></div>
+      </div>
+    </div>
+    <div class="footer">Fontes: Banco Central (Relatórios de Economia Bancária / séries de endividamento); Fundace (boletim de jul/2019); CNC/Peic. Séries completas mensais no SGS do BC.</div>
+  </section>
+
+  <!-- 8. POBREZA -->
+  <section class="slide">
+    <div class="kicker">Políticas sociais · pobreza</div>
+    <h2>Pobreza e extrema pobreza</h2>
+    <p class="sub">Percentual da população. Linhas: pobreza = US$ 6,85/dia; extrema pobreza = US$ 2,15/dia (paridade de poder de compra).</p>
+    <div class="grid2">
+      <div class="card chart-card"><h3>Percentual da população (%)</h3><p class="note">Pico da série em 2021 (auxílio emergencial). 2019–2020 e 2024 não localizados nesta pesquisa.</p><div class="chart" id="c-pobreza"></div></div>
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div class="card kpi"><div class="val">58,9 mi</div><div class="lbl">pessoas em pobreza em 2023 (IBGE, SIS)</div></div>
+        <div class="card kpi"><div class="val">9,5 mi</div><div class="lbl">pessoas em extrema pobreza em 2023</div></div>
+        <div class="card"><p class="small" style="margin:0">Sem transferências de renda, a extrema pobreza em 2023 seria de 11,2% (contra 4,4%). O IBGE atribui parte da queda à reedição do Bolsa Família em mar/2023 e ao mercado de trabalho.</p></div>
+      </div>
+    </div>
+    <div class="footer">Fonte: IBGE — Síntese de Indicadores Sociais (SIS). Dados de 2024 devem ser conferidos na SIS 2025.</div>
+  </section>
+
+  <!-- 9. SEGURANÇA PÚBLICA -->
+  <section class="slide">
+    <div class="kicker">Segurança pública</div>
+    <h2>Mortes violentas intencionais (MVI)</h2>
+    <p class="sub">MVI = homicídios dolosos, latrocínios, lesões seguidas de morte e mortes por intervenção policial e de policiais. Fonte: Anuário Brasileiro de Segurança Pública (FBSP).</p>
+    <div class="grid2">
+      <div class="card chart-card"><h3>MVI — total anual</h3><p class="note">2019 e 2023 não localizados. 2023 estimado em ~46,6 mil a partir da queda de 5,4% em 2024; não usar como dado oficial.</p><div class="chart" id="c-mvi"></div></div>
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div class="card kpi"><div class="val">23,6 <span style="font-size:16px;color:var(--muted)">por 100 mil (2020)</span></div><div class="lbl">Taxa nacional de MVI em 2020; 22,3 em 2021 (queda de 6,5%)</div></div>
+        <div class="card kpi"><div class="val lula">40.775 <span style="font-size:16px;color:var(--muted)">em 2025</span></div><div class="lbl">Menor nível desde 2012, segundo o 20º Anuário, com letalidade policial em alta</div></div>
+        <div class="card"><p class="small" style="margin:0">A queda das mortes violentas coexiste com recorde de mortes por intervenção policial e de feminicídios em 2024. Ambos os fatos aparecem no Anuário e devem ser lidos juntos.</p></div>
+      </div>
+    </div>
+    <div class="footer">Fonte: Fórum Brasileiro de Segurança Pública — Anuário Brasileiro de Segurança Pública (edições 2021 a 2026). Os números de 2019 e 2023 precisam ser conferidos nas edições originais.</div>
+  </section>
+
+  <!-- 10. LGBTI+ -->
+  <section class="slide">
+    <div class="kicker">Mortes de pessoas LGBTI+</div>
+    <h2>Mortes violentas por LGBTfobia</h2>
+    <p class="sub">Duas séries de ONGs, com metodologias diferentes. Não somam nem se substituem. Nenhuma das duas é oficial do governo.</p>
+    <div class="grid2">
+      <div class="card chart-card"><h3>Grupo Gay da Bahia — mortes violentas de LGBTI+</h3><p class="note">Inclui homicídios e suicídios. Média 2019–2022: 281 · Média 2023–2025: 268.</p><div class="chart" id="c-ggb"></div></div>
+      <div class="card chart-card"><h3>Antra — assassinatos de pessoas trans</h3><p class="note">2019–2020 vêm de fonte secundária. 2025 = ao menos 80 casos (dossiê 2026). Média 2019–2022: 143 · 2023–2024: 134.</p><div class="chart" id="c-antra"></div></div>
+    </div>
+    <div class="footer">Fontes: Grupo Gay da Bahia — Observatório de Mortes Violentas de LGBTI+ (relatórios 2020, 2021, 2024, 2025); Antra — dossiês anuais. Nota: as contagens dependem de notícias e registros, e as ONGs apontam subnotificação nos dados oficiais (Disque 100 e SINAN).</div>
+  </section>
+
+  <!-- 11. SANEAMENTO -->
+  <section class="slide">
+    <div class="kicker">Saneamento básico</div>
+    <h2>Água e esgoto na população</h2>
+    <p class="sub">Índice de atendimento com rede (% da população). Metas do Marco Legal (Lei 14.026/2020): 99% água e 90% esgoto até 2033.</p>
+    <div class="grid2">
+      <div class="card chart-card"><h3>Atendimento com rede (%)</h3><p class="note">Esgoto 2020: 55% (MDR). Esgoto 2023: 59,7% (SINISA). Água 2023: 83,1%. Séries de 2019 e 2024 não localizadas.</p><div class="chart" id="c-san"></div></div>
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div class="card kpi"><div class="val">78,7%</div><div class="lbl">do esgoto coletado é tratado (2023). Coleta de esgoto: 56% em 2022 (Trata Brasil/SNIS)</div></div>
+        <div class="card"><p class="small" style="margin:0"><b>Políticas:</b> o Marco Legal foi aprovado em 2020 (governo Bolsonaro) e abriu o setor a concessões privadas. O governo Lula mantém a meta de universalização e lançou investimentos no Novo PAC. Os efeitos das duas políticas ainda estão em andamento.</p></div>
+      </div>
+    </div>
+    <div class="footer">Fontes: SINISA/Ministério das Cidades (ano-base 2023); Ministério do Desenvolvimento Regional (diagnóstico 2020); Trata Brasil (análise do SNIS). Séries de 2019 e 2024 devem ser conferidas no painel do SINISA.</div>
+  </section>
+
+  <!-- 12. FISCAL -->
+  <section class="slide">
+    <div class="kicker">Contas públicas</div>
+    <h2>Resultado primário do governo central</h2>
+    <p class="sub">Receitas menos despesas, sem juros da dívida. Valores em % do PIB.</p>
+    <div class="grid2">
+      <div class="card chart-card"><h3>Resultado primário (% do PIB)</h3><p class="note">Só foram localizados 2024 e 2025. Para 2019–2022 não há série aqui (ver fontes).</p><div class="chart" id="c-fiscal"></div></div>
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div class="card kpi"><div class="val">−R$ 60,6 bi</div><div class="lbl">déficit do governo central em 2025 (Ipea), 0,48% do PIB</div></div>
+        <div class="card"><p class="small" style="margin:0">Alta de despesas primárias e de transferências a estados e municípios explica a piora em 2025, mesmo com receita real em alta. Para o mandato Bolsonaro, o dado fiscal precisa ser extraído da série oficial do Tesouro (RTN) antes de comparar.</p></div>
+      </div>
+    </div>
+    <div class="footer">Fontes: Ipea — Carta de Conjuntura (Panorama Fiscal, out/2025 e abr/2026); Câmara dos Deputados — Estudo técnico 06/2025. Fontes diferentes usam bases diferentes (governo central, setor público consolidado).</div>
+  </section>
+
+  <!-- 13. COMPARATIVO -->
+  <section class="slide">
+    <div class="kicker">Síntese</div>
+    <h2>Indicadores lado a lado</h2>
+    <p class="sub">Valor no início e no fim de cada mandato. Dados de Lula são parciais (mandato em curso).</p>
+    <table>
+      <thead><tr><th>Indicador</th><th>Fonte</th><th>Bolsonaro 2019–2022</th><th>Lula 2023–2026*</th></tr></thead>
+      <tbody>
+        <tr><td>PIB, média anual</td><td>IBGE</td><td class="num bolso">1,4%</td><td class="num lula">3,3% (2023–24)</td></tr>
+        <tr><td>IPCA, média anual</td><td>IBGE</td><td class="num bolso">6,2%</td><td class="num lula">4,6% (2023–25)</td></tr>
+        <tr><td>Selic no fim do período</td><td>BCB</td><td class="num bolso">4,50% → 13,75%</td><td class="num lula">11,75% → 15,00% (2025)</td></tr>
+        <tr><td>Desemprego médio</td><td>IBGE</td><td class="num bolso">11,9% (2019) → 9,3% (2022)</td><td class="num lula">7,8% (2023) → 6,6% (2024)</td></tr>
+        <tr><td>Dívida bruta (% PIB)</td><td>BCB</td><td class="num bolso">87,6% (pico 2020) → 73,5% (2022)</td><td class="num lula">76,3% (2024) → 78,7% (2025) → 82,9% (ago/26)</td></tr>
+        <tr><td>Endividamento das famílias</td><td>BCB</td><td class="num bolso">44,5% (jul/19) → 49,9% (jul/22)</td><td class="num lula">47,7% (dez/23) → 49,8% (dez/25)</td></tr>
+        <tr><td>Pobreza (US$ 6,85/dia)</td><td>IBGE</td><td class="num bolso">36,7% (2021, pico)</td><td class="num lula">31,6% (2022) → 27,4% (2023)</td></tr>
+        <tr><td>Mortes violentas intencionais</td><td>FBSP</td><td class="num bolso">23,6/100 mil (2020)</td><td class="num lula">44.127 (2024) → 40.775 (2025)</td></tr>
+        <tr><td>LGBTI+ mortos (GGB)</td><td>ONG</td><td class="num bolso">281 média/ano</td><td class="num lula">268 média/ano</td></tr>
+        <tr><td>Pessoas trans assassinadas (Antra)</td><td>ONG</td><td class="num bolso">143 média/ano</td><td class="num lula">134 média/ano (2023–24)</td></tr>
+        <tr><td>Esgoto coletado (% pop.)</td><td>SINISA/MDR</td><td class="num bolso">55% (2020)</td><td class="num lula">59,7% (2023)</td></tr>
+      </tbody>
+    </table>
+    <div class="footer">*Lula: mandato até 31/12/2026. Médias simples dos anos disponíveis. Os períodos têm eventos externos relevantes (pandemia em 2020–21 e guerra na Ucrânia em 2022), o que limita a comparação direta.</div>
+  </section>
+
+  <!-- 14. LEITURA IMPARCIAL -->
+  <section class="slide">
+    <div class="kicker">Interpretação</div>
+    <h2>O que os números não respondem sozinhos</h2>
+    <p class="sub">Atribuir causa a cada indicador é tema de debate. Abaixo estão fatores que cada lado costuma citar.</p>
+    <div class="grid2">
+      <div class="card">
+        <h3 style="margin-top:0" class="bolso">Argumentos frequentemente associados ao mandato Bolsonaro</h3>
+        <ul>
+          <li>Auxílio Emergencial em 2020 sustentou renda e consumo na pandemia</li>
+          <li>Teto de gastos (EC 95/2016) foi mantido e limitou despesa primária</li>
+          <li>Marco Legal do Saneamento (2020) e reformas como a da Previdência (2019)</li>
+          <li>Juros e inflação altos em 2021–22 vieram de choque global e de pressão de preços; crescimento de 2021 teve forte base de comparação</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0" class="lula">Argumentos frequentemente associados ao mandato Lula</h3>
+        <ul>
+          <li>Reedição do Bolsa Família (2023) e reajustes reais do salário mínimo</li>
+          <li>Arcabouço fiscal (2023) no lugar do teto de gastos</li>
+          <li>Queda do desemprego e da pobreza, com crescimento acima de 3% em 2023–24</li>
+          <li>Dívida e juros altos em 2025 vieram de déficits e de juros elevados que o próprio governo critica; o Banco Central cita a inflação e a política monetária</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer">Os argumentos acima são posições comuns no debate público, não conclusões deste levantamento. Efeitos da política fiscal, da Selic e de fatores externos devem ser estudados com séries completas e modelos próprios.</div>
+  </section>
+
+  <!-- 15. FONTES -->
+  <section class="slide">
+    <div class="kicker">Referências</div>
+    <h2>Fontes consultadas</h2>
+    <div class="grid2" style="gap:14px">
+      <div class="card small" style="font-size:13.5px;color:var(--ink)">
+        <b>Oficiais</b>
+        <ul style="font-size:13.5px;line-height:1.5">
+          <li>IBGE — Contas Nacionais (PIB): <span class="small">agenciadenoticias.ibge.gov.br</span></li>
+          <li>IBGE — IPCA e PNAD Contínua: <span class="small">ibge.gov.br</span></li>
+          <li>IBGE — Síntese de Indicadores Sociais (SIS)</li>
+          <li>Banco Central — Copom (Selic), Estatísticas Fiscais (DBGG), Relatórios de Economia Bancária (endividamento): <span class="small">bcb.gov.br</span></li>
+          <li>Ipea — Carta de Conjuntura, Panorama Fiscal</li>
+          <li>Câmara dos Deputados — Estudo técnico 06/2025 (orçamento)</li>
+          <li>FBSP — Anuário Brasileiro de Segurança Pública (edições 2021–2026)</li>
+          <li>SINISA / Ministério das Cidades; MDR — Diagnóstico de esgoto</li>
+        </ul>
+      </div>
+      <div class="card" style="font-size:13.5px">
+        <b>Não governamentais (identificadas no gráfico)</b>
+        <ul style="font-size:13.5px;line-height:1.5">
+          <li>Grupo Gay da Bahia — Observatório de Mortes Violentas de LGBTI+ (2020, 2021, 2024, 2025)</li>
+          <li>Antra — dossiês anuais de assassinatos de pessoas trans</li>
+          <li>CNC — Peic (famílias endividadas)</li>
+          <li>Instituto Trata Brasil — Ranking do Saneamento</li>
+          <li>Fundace — boletim de endividamento (jul/2019)</li>
+        </ul>
+        <p class="small" style="margin-top:12px">Atualizações: confira as séries no portal de cada fonte antes de publicar. Esta apresentação usa valores de imprensa que citam essas fontes para parte dos anos.</p>
+      </div>
+    </div>
+  </section>
+
+</div>
+<div class="nav" id="nav">← → para navegar</div>
+
+<script>
+// ---------- dados (valores null = n.d.) ----------
+const C = { bolso: "#4a6fa5", lula: "#b5862a", cinza: "#9aa5b1", grade: "#e4e0d6", ink: "#1f2933", muted: "#6b7785" };
+
+function bars(el, labels, values, { max, unit = "", colorFn, decimals = 1, minV = 0 } = {}) {
+  const W = 600, H = 300, pad = { t: 24, r: 14, b: 42, l: 46 };
+  const vals = values.filter(v => v !== null);
+  const top = max ?? Math.ceil(Math.max(...vals) * 1.15);
+  const bottom = Math.min(minV, Math.min(...vals));
+  const range = top - bottom;
+  const iw = W - pad.l - pad.r, ih = H - pad.t - pad.b;
+  const bw = iw / labels.length;
+  let s = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="font-family:inherit">`;
+  for (let i = 0; i <= 4; i++) {
+    const v = bottom + (range * i) / 4;
+    const y = pad.t + ih - ((v - bottom) / range) * ih;
+    s += `<line x1="${pad.l}" x2="${W - pad.r}" y1="${y}" y2="${y}" stroke="${C.grade}"/>`;
+    s += `<text x="${pad.l - 6}" y="${y + 4}" text-anchor="end" font-size="11" fill="${C.muted}">${v.toFixed(decimals === 0 ? 0 : 0)}</text>`;
+  }
+  const zeroY = pad.t + ih - ((0 - bottom) / range) * ih;
+  labels.forEach((lab, i) => {
+    const x = pad.l + i * bw + bw * 0.18;
+    const w = bw * 0.64;
+    const v = values[i];
+    const color = colorFn ? colorFn(i) : C.bolso;
+    if (v === null) {
+      s += `<text x="${x + w / 2}" y="${zeroY - 8}" text-anchor="middle" font-size="11" fill="#b0b8c1" font-style="italic">n.d.</text>`;
+    } else {
+      const y = pad.t + ih - ((v - bottom) / range) * ih;
+      const yTop = Math.min(y, zeroY), h = Math.abs(zeroY - y);
+      s += `<rect x="${x}" y="${yTop}" width="${w}" height="${Math.max(h, 1)}" rx="4" fill="${color}"/>`;
+      const ty = v >= 0 ? yTop - 6 : yTop + h + 14;
+      s += `<text x="${x + w / 2}" y="${ty}" text-anchor="middle" font-size="12" font-weight="600" fill="${C.ink}">${v.toLocaleString("pt-BR", { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}${unit}</text>`;
+    }
+    s += `<text x="${x + w / 2}" y="${H - 18}" text-anchor="middle" font-size="12" fill="${C.muted}">${lab}</text>`;
+  });
+  s += `<line x1="${pad.l}" x2="${W - pad.r}" y1="${zeroY}" y2="${zeroY}" stroke="#7b8794"/>`;
+  s += `</svg>`;
+  el.innerHTML = s;
+}
+
+function legendHtml(items) {
+  return `<div style="display:flex;gap:14px;font-size:12px;color:#6b7785;margin:0 0 6px">` +
+    items.map(([c, t]) => `<span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:${c};margin-right:5px"></span>${t}</span>`).join("") + `</div>`;
+}
+
+const anosPIB = ["2019", "2020", "2021", "2022", "2023", "2024"];
+const ano = (y) => (+y <= 2022 ? C.bolso : C.lula);
+
+function render() {
+  bars(document.getElementById("c-pib"), anosPIB, [1.2, -3.3, 4.8, 3.0, 3.2, 3.4],
+    { max: 6, minV: -4, unit: "%", colorFn: i => ano(anosPIB[i]), decimals: 1 });
+
+  bars(document.getElementById("c-ipca"), ["2019", "2020", "2021", "2022", "2023", "2024", "2025"],
+    [4.31, 4.52, 10.06, 5.79, 4.62, 4.83, 4.26], { max: 12, unit: "%", colorFn: i => ano(2019 + i), decimals: 2 });
+
+  bars(document.getElementById("c-selic"), ["2019", "2020", "2021", "2022", "2023", "2024", "2025"],
+    [4.5, 2.0, 9.25, 13.75, 11.75, 12.25, 15.0], { max: 16, unit: "%", colorFn: i => ano(2019 + i), decimals: 2 });
+
+  bars(document.getElementById("c-desemp"), ["2019", "2020", "2021", "2022", "2023", "2024"],
+    [11.9, 13.5, null, 9.3, 7.8, 6.6], { max: 15, unit: "%", colorFn: i => ano(2019 + i), decimals: 1 });
+
+  bars(document.getElementById("c-divida"), ["2019", "2020", "2022", "2024", "2025", "ago/26"],
+    [null, 87.6, 73.5, 76.3, 78.7, 82.9], { max: 100, unit: "%", colorFn: i => ["2019","2020","2022"].includes(["2019","2020","2022","2024","2025","ago/26"][i]) ? C.bolso : C.lula, decimals: 1 });
+
+  bars(document.getElementById("c-endiv"), ["jul/19", "jul/22", "dez/23", "dez/25", "jan/26"],
+    [44.5, 49.9, 47.7, 49.8, 49.9], { max: 60, unit: "%", colorFn: i => i < 2 ? C.bolso : C.lula, decimals: 1 });
+
+  bars(document.getElementById("c-pobreza"), ["2021", "2022", "2023"],
+    [36.7, 31.6, 27.4], { max: 40, unit: "%", colorFn: i => i === 0 ? C.bolso : C.lula, decimals: 1 });
+
+  bars(document.getElementById("c-mvi"), ["2020", "2021", "2022", "2024", "2025"],
+    [null, null, 47452, 44127, 40775], { max: 55000, unit: "", colorFn: i => i < 2 ? C.bolso : C.lula, decimals: 0 });
+
+  bars(document.getElementById("c-ggb"), ["2019", "2020", "2021", "2022", "2023", "2024", "2025"],
+    [329, 237, 300, 256, 257, 291, 257], { max: 350, unit: "", colorFn: i => ano(2019 + i), decimals: 0 });
+
+  bars(document.getElementById("c-antra"), ["2019", "2020", "2021", "2022", "2023", "2024", "2025*"],
+    [124, 175, 140, 131, 145, 122, 80], { max: 200, unit: "", colorFn: i => ano(2019 + i), decimals: 0 });
+
+  bars(document.getElementById("c-san"), ["Esgoto 2020", "Esgoto 2023", "Água 2023"],
+    [55, 59.7, 83.1], { max: 100, unit: "%", colorFn: i => i === 2 ? C.cinza : (i === 0 ? C.bolso : C.lula), decimals: 1 });
+
+  bars(document.getElementById("c-fiscal"), ["2024", "2025"],
+    [-0.36, -0.48], { max: 0, minV: -0.6, unit: "%", colorFn: i => i === 0 ? C.lula : C.lula, decimals: 2 });
+}
+
+// ---------- navegação ----------
+const slides = [...document.querySelectorAll(".slide")];
+let idx = 0;
+function show(i) {
+  idx = Math.max(0, Math.min(slides.length - 1, i));
+  slides.forEach((s, k) => s.classList.toggle("active", k === idx));
+  document.getElementById("nav").textContent = `${idx + 1} / ${slides.length} · ← → para navegar`;
+  location.hash = idx + 1;
+}
+document.addEventListener("keydown", e => {
+  if (["ArrowRight", "PageDown", " "].includes(e.key)) show(idx + 1);
+  if (["ArrowLeft", "PageUp"].includes(e.key)) show(idx - 1);
+  if (e.key === "Home") show(0);
+  if (e.key === "End") show(slides.length - 1);
+});
+document.getElementById("deck").addEventListener("click", e => {
+  const r = e.currentTarget.getBoundingClientRect();
+  show(e.clientX > r.left + r.width / 2 ? idx + 1 : idx - 1);
+});
+window.addEventListener("beforeprint", () => slides.forEach(s => s.classList.add("active")));
+window.addEventListener("afterprint", () => show(idx));
+render();
+show((parseInt(location.hash.slice(1)) || 1) - 1);
+</script>
+</body>
+</html>
